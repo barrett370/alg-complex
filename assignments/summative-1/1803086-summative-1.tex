@@ -1,0 +1,88 @@
+\documentclass{article}
+
+\title{Algorithms \& Complexity (Extended) Summative Midterm Controlled Assessment}
+
+\author{1803086}
+
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+  \item
+
+        \begin{enumerate}
+          \item Given that $L_{1}, L_{2} \in \mathbf{coNP}$, show that $L_{1} \cap L_{2} \in \mathbf{coNP} $ and $L_{1} \cup L_{2} \in \mathbf{coNP} $
+
+                We already know that if $L_{1}, L_{2} \in \mathbf{coNP}$ then $\bar{L_{1}}, \bar{L_{2}} \in \mathbf{NP} $ as well as $\bar{L_{1}} \cap \bar{L_{2}} \in \mathbf{NP} $ and $\bar{L_{1}} \cup \bar{L_{2}} \in \mathbf{NP} $.
+
+                If we let $L_{3} = L_{1} \cap L_{2}$ and $L_{4} = L_{1} \cup L_{2}$, we therefore know that $\bar{L_3}, \bar{L_{4}} \in \mathbf{NP} $, so therefore, their compliments $L_{3}$ and $L_{4}$ are in $\mathbf{coNP} $
+
+                If $L_{3}, L_{4} \in \mathbf{coNP} $ then we can therefore say that $L_{1}\cap L_{2} \in \mathbf{coNP} $ and $L_{1} \cup L_{2} \in \mathbf{coNP} $
+
+          \item To modify our machine $M$ to decide the compliment of $L$, we use the simple fact that any string decided by $M$ to \textbf{not} be in $L$ must then be in $\bar{L}$. Our machine $M'$ can therefore be constructed to run $M$ on an input $x$ and write its result to our final (non-output) work tape. We then write $1-$ the result to our output tape and halt. Though this would use an extra cell compared with $M$, the time complexity would still be in the same class as inverting and writing a bit is $O(1)$.
+
+                Alternatively, one could edit $M$ such that if it finds $x$ to be in $L$ is writes 0 to the output tape and halts and otherwise writes $1$ to the output tape and halts.
+
+          \item From (b) we have a method for deciding the compliment of a language with a polytime ($O(t(n))$) machine. Therefore by definition of $\mathbf{P}$ as $\displaystyle\bigcup_{k\geq 1}\mathbf{DTIME}(n^{k}) $ All languages in $\mathbf{coNP} $ must be decidable in polynomial time and therefore are in $\mathbf{P}$, meaning, $\mathbf{P} = \mathbf{coNP}  $.
+
+        \end{enumerate}
+  \item
+
+        \begin{enumerate}
+          \item The preference lists are as follows:
+
+
+        \begin{center}
+        \begin{tabular}{ | c | c | c | c | c | }
+          \hline
+          & 1st & 2nd & 3rd & 4th \\
+          \hline
+          $h_{1}$ & $s_{1}$ & $s_{2}$ & $s_{4}$ & $s_{3}$ \\
+          \hline
+          $h_{2}$ & $s_{2}$ & $s_{3}$ & $s_{1}$ & $s_{4}$\\
+          \hline
+          $h_{3}$ & $s_{4}$ & $s_{1}$ & $s_{3}$ & $s_{2}$ \\
+          \hline
+          $h_{4}$ & $s_{3}$ & $s_{1}$ & $s_{4}$ & $s_{2}$\\
+          \hline
+        \end{tabular}
+      \end{center}
+
+
+        \begin{center}
+        \begin{tabular}{ | c | c | c | c | c | }
+          \hline
+          & 1st & 2nd & 3rd & 4th \\
+          \hline
+          $s_{1}$ & $h_{1}$ & $h_{2}$ & $h_{4}$ & $h_{3}$ \\
+          \hline
+          $s_{2}$ & $h_{2}$ & $h_{3}$ & $h_{1}$ & $h_{4}$\\
+          \hline
+          $s_{3}$ & $h_{4}$ & $h_{1}$ & $h_{3}$ & $h_{2}$ \\
+          \hline
+          $s_{4}$ & $h_{3}$ & $h_{1}$ & $h_{4}$ & $h_{2}$\\
+          \hline
+        \end{tabular}
+        \end{center}
+
+                The above preference lists satisfy all given properties. This is the case as for each hospital, any properties are enforced by placing them as low down in preference as possible. I.e. the allocation would only be made if there was no way to avoid it. We know that Gale-Shapely always matches $\texttt{Best}(h) $ to $h$ for each hospital $h$, and looking at the hospital preference lists, there is no source of conflict in the first position, meaning the required properties are un -visited at the end of each respective list.
+          \item As it turns out, my preference lists for part (a) satisfy this requirement. In both tables, there is no conflict in the first column. Each first column specifies the same set of matchings so therefore Gale shapely when run either way on these tables returns this (same) matching.
+
+
+
+        \end{enumerate}
+  \item
+        \begin{enumerate}
+\item In the case where $N=9$, the greedy algorithm would first do a long run of 6, followed by 3 days of short runs (1), as the remaining distance is shorter than the medium run (4), to make 9 totalling 4 days. The optimal number of days would in this case be 3, two medium runs followed by a single short run.
+          \item
+                If we were to generate a times table list for each of the run lengths up to a given $N$ (or as close to it as we can). We can then find the lowest index in any of these three lists to contain $N$. If this lands in the $d$-list we subtract $d$ from $N$, store $d$ on a stack and repeat until we reach 0, at which point the stack contains $\texttt{OPT}[N] $
+          \item In this case all run lengths are divisible by the lower lengths. The result of this is that, at any time if $N > 4$, run length $l$ will be the optimal choice as the alternatives are simply diving a single run into multiple runs across multiple days. At any point the largest possible run to be chosen is the optimal choice. There is no way of diving a number $N$ into smaller parts by dividing by a smaller number. There is no $N, N\geq 4$ such that $\frac{N}{1} < \frac{N}{2} < \frac{N}{4}$.
+        \end{enumerate}
+
+
+
+
+\end{enumerate}
+
+\end{document}
