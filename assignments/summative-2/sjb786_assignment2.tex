@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\title{Week 12 Continuous Assessment}
+\author{1803086}
+\begin{document}
+\maketitle
+\begin{enumerate}
+  \item
+
+  \item
+        \[
+        d(x,y,z) = 1 \Longleftrightarrow x = y = 1 \text{ or } x = z = 0
+        \]
+
+        \begin{enumerate}
+          \item
+                \begin{align*}
+                  d(x,y,z) = &(x \wedge y) \vee (\neg x \wedge \neg z) \\
+                  &\equiv \neg ( \neg ( x \wedge y ) \wedge \neg (\neg x \wedge \neg z) ) \\
+                  &\equiv \neg ((\neg x \vee \neg y) \wedge (x \vee z)) \\
+                  &\equiv \neg ((\neg x \wedge x) \vee (\neg x \wedge z) \vee (\neg y \wedge x) \vee (\neg y \wedge z)) \\
+                  &\equiv \neg (\neg x \wedge z) \wedge \neg ( \neg y \wedge x ) \wedge \neg (\neg y \wedge z) \\
+                  &\equiv (x \vee z) \wedge (y \vee x) \wedge (y \vee \neg z)
+                \end{align*}
+
+          \item
+                \begin{enumerate}
+
+                  \item
+                        \begin{align*}
+                          x \vee y &\Longleftrightarrow \\
+                          & d(0, && d(\\
+                                && d(\neg x,\neg y,d(x,x,x)),\\
+                                && d(\neg x,\neg y,d(x,x,x)),\\
+                                && d(\neg x,\neg y,d(x,x,x)) \\
+                          &&) \\
+                         &,d(\neg x,\neg y,d(x,x,x)))
+                        \end{align*}
+                        Where:
+                        \begin{itemize}
+                          \item $\neg x = d(0,d(x,x,x),x)$
+                          \item $\neg y = d(0,d(y,y,y),y)$
+                        \end{itemize}
+
+           \item $x \wedge y \Longleftrightarrow d(x,y,d(x,x,x))$
+         \end{enumerate}
+
+
+        \end{enumerate}
+  \item By the change-of-basis theorem
+
+        Let the circuits $\Omega_{1}$ defined using the operators $\{ \neg , \wedge , \vee \} $ and let the circuits defined over $\{ d, 0 \} $ be the set $\Omega_{2}$
+
+        for each circuit $c_{i} \in \Omega_{1}$ let there be an equivalent circuit $c'_{i} \in \Omega_{2}$ of size $s_{i}$ and depth $l_{i}$ which computes $c_{i}$. Also let $s = \max_{i} s_{i}$ and $l = \max_{i} l_{i}$.
+
+        Given a circuit $C \in \Omega_{1}$ , we can construct a logically equivalent circuit $C' \in \Omega_{2}$ by replacing all non-source nodes labelled with $c_{i}$ by the circuit $c'_{i}$.
+
+        With $\Omega_{1} = \{ \neg , \vee , \wedge\} $ and $\Omega_{2} = \{ 0, d \} $ we can show that every $\Omega_{1}$ circuit $C $ can be polynomially transformed to a $\Omega_{2}$ circuit $C'$.
+
+        for the operator \(\neg\), we have seen in (b) that this can be transformed into $d(0,d(x,x,x),x)$. This node can therefore be replaced with a circuit of depth 6.
+
+        The operator $\vee$ has been shown to be equivalent to the \(\Omega_{2}\) circuit of depth 9.
+
+        The \(\wedge\) operator has been shown to be equivalent to a \(\Omega_{2}\) circuit of depth 6.
+
+        Therefore we can see that in this case $l = 9$ and so the depth of $C'$ is at most $9 \cdot \texttt{depth} (C)$ which is in $O(\texttt{depth} (C))$
+
+
+\end{enumerate}
+
+\end{document}
