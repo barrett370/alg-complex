@@ -1,11 +1,63 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb,minted}
 \title{Week 12 Continuous Assessment}
 \author{1803086}
 \begin{document}
 \maketitle
 \begin{enumerate}
   \item
+
+%        \begin{minted}{julia}
+%
+%function almost_tsp(C::Array{String}, dist::Function)
+%    n = C |> length
+%    OPT = Dict{Tuple{Array{String},String},Real}()
+%    for i = 2:n
+%        OPT[([C[i]], C[i])] = dist(C[1], C[i])
+%    end
+%    subsets = C[2:n] |> powerset |> collect
+%    for k = 2:n-3
+%        for S in filter(i -> i |> length == k, subsets)
+%            for ci in S
+%                OPT[(S, ci)] =
+%                minimum(
+%                  map(cj -> OPT[(S \ [ci], cj)] + dist(cj, ci), S \ [ci])
+%                )
+%            end
+%        end
+%    end
+%    n2_paths = filter(i -> i |> length == n-3, subsets)
+%    return minimum(map(r -> OPT[(r, r[1])] + dist(r[1], C[1]),n2_paths))
+%end
+%\end{minted}
+
+%        This algorithm only slightly differs from the $2^{n}\cdot n^{2}$ algorithm seen in Lecture 13. The final return statement has been altered to only consider those routes with length $n-2$. It does this by sequentially considering the subsets in the powerset of $\{ c_{2},c_{3},\ldots,c_{n-1},c_{n} \} $ with a length of $n-3$ (accounting for the addition of $c_{1}$). For each of these subsets, it calculates the lengths of travelling from each node to all other nodes in the subset plus the distance back to $c_{1}$, as the initial TSP algorithm does for the singular set $\{ c_{2},\ldots,c_{n} \} $. For a set $S$ of size $n$, the size of its powerset is $2^{n}$, the number of elements in this powerset of length $n-3$ is $\frac{n^{2}}{2}+ n$.
+%
+%        Also, the range for $k$ has been reduced to $1,\ldots,n-3$ so as not to generate useless data regarding routes which are too long to be considered.
+%
+%        We compute the min over these $|S|$ numbers $\frac{n^{2}}{2}+ n$ times. Each time we look up $|S| -1$ entries and do $|S|-1$ additions, resulting in an overall time of $O(n)$ since $|S| \leq n-1$, therefore the time complexity for this new step is $\frac{n^{3}}{2} + n^{2}$; giving an overall complexity of $2^{n} \cdot \frac{n^{3}}{2} + n^{2}$ which is in $2^{n} \cdot n^{O(1)}$.
+
+        The number of subsets with $n-2$ elements of $C$ is given by the binomial cooefficient. $\begin{pmatrix}
+          n \\ 2
+        \end{pmatrix}$, which equates to $\frac{1}{2}(n-1)n$. We can therefore, run the existing $2^{n} \cdot n^{2}$ TSP algorithm as such:
+
+        \[
+        TSP(C\ c_{i}), i = 1,\ldots,\begin{pmatrix}
+          n \\ 2
+        \end{pmatrix}
+        \]
+
+        Where each $c_{i}$ is a 2 element subset of $C$.
+
+        We then take the minimum of these $\frac{1}{2}(n-1)n$ values, in $\frac{1}{2}(n-1)n$ time.
+
+        We therefore run our $2^{n}\cdot n^{2}$ algorithm $\frac{1}{2}(n-1)n$ times, giving an runtime complexity of $2^{n} \cdot \frac{1}{2}(n-1)n^{3}$ before taking the minimum, in $\frac{1}{2}(n-1)$ time, giving an overall runtime of $2^{n} \cdot \frac{n^{4}}{4}(n-1)^{2}$ which is in $2^{n} \cdot n^{O(1)}$.
+
+
+        As for this algorithm's correctness, we can assume the result of each call to the predefined TSP function is correct. Each one of these results will be the shortest route which visits \textbf{all} the nodes in the (n-2) subset provided to it. Therefore after running all $\begin{pmatrix}
+          n\\2
+        \end{pmatrix}$ instances, we are left with an array of the shortest distances visiting $n-2$ nodes, therefore the smallest among them is the shortest overall path through the graph which visits \textbf{exactly} $n-2$ nodes.
+
 
   \item
         \[
@@ -45,8 +97,6 @@
            \item $x \wedge y \Longleftrightarrow d(x,y,d(x,x,x))$
          \end{enumerate}
 
-
-        \end{enumerate}
   \item By the change-of-basis theorem
 
         Let the circuits $\Omega_{1}$ defined using the operators $\{ \neg , \wedge , \vee \} $ and let the circuits defined over $\{ d, 0 \} $ be the set $\Omega_{2}$
@@ -66,6 +116,49 @@
         Therefore we can see that in this case $l = 9$ and so the depth of $C'$ is at most $9 \cdot \texttt{depth} (C)$ which is in $O(\texttt{depth} (C))$
 
 
+        \end{enumerate}
+  \item
+
+        \begin{enumerate}
+          \item Show that if $\bigvee L_{j} = 0$  for some $j = 1, \ldots ,m$ then $f(\vec{x}, \vec{y}, \vec{z}) = 0$
+
+                For any set of literals $L_{j}$, for $\bigvee L_{j}$ to equal 0, all literals in $L_{j}$ must also equal 0.
+
+                If $\bigvee L_{j}=0$ then no conjunction of the remaining $L_{i}, i=1,\ldots,m, i \neq j$, can now satisfy $\bigwedge_{j=1}^{m}\bigvee L_{j}$ as this would take the form:
+
+                \[
+                (\bigwedge_{j=1, j\neq i}^{m}\bigvee L_{j})\wedge 0
+                \]
+
+                Which cannot be satisfied.
+
+                The fact that this is said to be a \textbf{minimal} CNF, implies that there are no dual literals in any set of literals $L_{j}$, therefore, we do not have any set of literals $L_{j}$ constructed purely from these dual literals. This allows us to assume that if
+
+          \item In order for $f(\vec{x}, \vec{y}, \vec{z})$ to be false, one or more of $(x_{i},y_{i},z_{i})$ must be false for each $i = 1,\ldots,n$.
+
+                This is the case as for the disjunction over $i=1,\ldots,n$  of $(x_{i}\wedge y_{i}\wedge z_{i})$ to be false all $(x_{i}\wedge y_{i}\wedge z_{i})$ must be false. For this to be the case in each set of literals, grouped by $i$, one or more must be false in order to falsify the conjunction.
+
+
+
+        \end{enumerate}
+\newpage
+  \item
+
+        In complexity theory, one strives to find the most optimal algorithms to solve a problem.
+
+        Whilst we have not yet the means to necessarily find these, we can posit as to whether algorithms within various complexity classes exist for such problems.
+
+        Current theories regarding complexity classes and how they might relate to one another, (for example NP-Hard, NP and P) give us broad upper and or lower bounds for complexity but for some problems these bounds are still too generous. The paper gives as an example the potential for a $n^{O(\log n)}$ time algorithm for 3SAT, which under current theories regarding NP-Hardness, is possible, though thought to be extremely unlikely.
+
+        The Exponential Time Hypothesis (ETH) is proposed as a means by which these classes can be \textit{tightened} around certain problems. Allowing us to rule out the possibility or show the potential for algorithms solving hard problems in a certain complexity.
+
+        The core of the ETH states that ``There is a positive real $s$ s.t. 3-CNF-Sat with parameter $n$ cannot be solved in time $2^{sn}(n+m)^{O(1)}$'' and as such if we can reduce a problem to 3-CNF-Sat in such a way that takes subexponential time, we can also say that there is no subexponential time algorithm to solve it.
+
+        The paper uses two methods of reduction which satisfy this requirement: many-to-one, Fixed Paramter Tractable and Turing reduction.
+
 \end{enumerate}
+
+
+
 
 \end{document}

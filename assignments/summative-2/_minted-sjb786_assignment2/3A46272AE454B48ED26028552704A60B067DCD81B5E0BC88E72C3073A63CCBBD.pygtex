@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+          \PYG{k}{using} \PYG{n}{Combinatorics}
+
+\PYG{k}{function} \PYG{p}{(}\PYG{o}{\PYGZbs{}}\PYG{p}{)(}\PYG{n}{A}\PYG{o}{::}\PYG{k+kt}{Array}\PYG{p}{,} \PYG{n}{S}\PYG{o}{::}\PYG{k+kt}{Array}\PYG{p}{)}
+    \PYG{n}{filter}\PYG{p}{(}\PYG{n}{each} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{each} \PYG{o}{∉} \PYG{n}{S}\PYG{p}{,} \PYG{n}{A}\PYG{p}{)}
+\PYG{k}{end}
+
+\PYG{k}{function} \PYG{n}{almost\PYGZus{}tsp}\PYG{p}{(}\PYG{n}{C}\PYG{o}{::}\PYG{k+kt}{Array}\PYG{p}{\PYGZob{}}\PYG{k+kt}{String}\PYG{p}{\PYGZcb{},} \PYG{n}{dist}\PYG{o}{::}\PYG{k+kt}{Function}\PYG{p}{)}
+    \PYG{n}{n} \PYG{o}{=} \PYG{n}{C} \PYG{o}{|\PYGZgt{}} \PYG{n}{length}
+    \PYG{n}{OPT} \PYG{o}{=} \PYG{k+kt}{Dict}\PYG{p}{\PYGZob{}}\PYG{k+kt}{Tuple}\PYG{p}{\PYGZob{}}\PYG{k+kt}{Array}\PYG{p}{\PYGZob{}}\PYG{k+kt}{String}\PYG{p}{\PYGZcb{},}\PYG{k+kt}{String}\PYG{p}{\PYGZcb{},}\PYG{k+kt}{Real}\PYG{p}{\PYGZcb{}()}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{o}{:}\PYG{n}{n}
+        \PYG{n}{OPT}\PYG{p}{[([}\PYG{n}{C}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]],} \PYG{n}{C}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])]} \PYG{o}{=} \PYG{n}{dist}\PYG{p}{(}\PYG{n}{C}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{C}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}
+    \PYG{k}{end}
+    \PYG{n}{subsets} \PYG{o}{=} \PYG{n}{C}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{o}{:}\PYG{n}{n}\PYG{p}{]} \PYG{o}{|\PYGZgt{}} \PYG{n}{powerset} \PYG{o}{|\PYGZgt{}} \PYG{n}{collect}
+    \PYG{k}{for} \PYG{n}{k} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{o}{:}\PYG{n}{n}
+        \PYG{k}{for} \PYG{n}{S} \PYG{o}{∈} \PYG{n}{filter}\PYG{p}{(}\PYG{n}{i} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{i} \PYG{o}{|\PYGZgt{}} \PYG{n}{length} \PYG{o}{==} \PYG{n}{k}\PYG{p}{,} \PYG{n}{subsets}\PYG{p}{)}
+            \PYG{k}{for} \PYG{n}{ci} \PYG{k}{in} \PYG{n}{S}
+                \PYG{n}{OPT}\PYG{p}{[(}\PYG{n}{S}\PYG{p}{,} \PYG{n}{ci}\PYG{p}{)]} \PYG{o}{=}
+                    \PYG{n}{minimum}\PYG{p}{(}\PYG{n}{map}\PYG{p}{(}\PYG{n}{cj} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{OPT}\PYG{p}{[(}\PYG{n}{S} \PYG{o}{\PYGZbs{}} \PYG{p}{[}\PYG{n}{ci}\PYG{p}{],} \PYG{n}{cj}\PYG{p}{)]} \PYG{o}{+} \PYG{n}{dist}\PYG{p}{(}\PYG{n}{cj}\PYG{p}{,} \PYG{n}{ci}\PYG{p}{),} \PYG{n}{S} \PYG{o}{\PYGZbs{}} \PYG{p}{[}\PYG{n}{ci}\PYG{p}{]))}
+            \PYG{k}{end}
+        \PYG{k}{end}
+    \PYG{k}{end}
+    \PYG{n}{n2} \PYG{o}{=} \PYG{n}{filter}\PYG{p}{(}\PYG{n}{i} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{i} \PYG{o}{|\PYGZgt{}} \PYG{n}{length} \PYG{o}{==} \PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{subsets}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{minimum}\PYG{p}{(}\PYG{n}{map}\PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{OPT}\PYG{p}{[(}\PYG{n}{r}\PYG{p}{,} \PYG{n}{r}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{])]} \PYG{o}{+} \PYG{n}{dist}\PYG{p}{(}\PYG{n}{r}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{C}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]),}\PYG{n}{n2}\PYG{p}{))}
+\PYG{k}{end}
+\end{Verbatim}

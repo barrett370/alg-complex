@@ -6,6 +6,7 @@
     "article"
     "art10"
     "amsmath"
-    "amssymb"))
+    "amssymb"
+    "minted"))
  :latex)
 
